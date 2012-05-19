@@ -1,0 +1,4 @@
+JSPathfinding
+=============
+
+A* JS Pathfinding
