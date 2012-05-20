@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <title>Pathfinding preview</title>
+  <script type="text/javascript" src="../../lib/list.js"></script>
+  <script type="text/javascript" src="../../lib/path.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      $.get( '../map.json', function(data){
+        if( 'object' == typeof data ) {
+          // render grid
+          $.each( data, function( tile, point ) {
+            $( '<tile />' ).append( $( '<em />' ).text( tile ) ).addClass( point ).attr( 'data-tile', tile ).appendTo( 'grid' )
+          })
+          
+          // request path
+          new Path({
+            start: [4,2],
+            end: [3,7],
+            map: data,
+            debug: false,
+            square: false,
+            collision: function Collision( id, point, half ){
+              if( point == 'tree' )
+                return true;
+              return false;
+            },
+            callback: function( result ){
+              if( result.length ) {
+                $( 'tile[data-tile="' + result[0] + '"]' ).addClass( 'start' ) 
+                $( 'tile[data-tile="' + result[( result.length - 1 )] + '"]' ).addClass( 'end' ) 
+              }
+              var timeout = setInterval(function(){
+                var nextTile = result.shift()
+                $( 'tile[data-tile="' + nextTile + '"]' ).addClass( 'selected' )
+                if( !nextTile )
+                  clearInterval(timeout)
+              }, 100)
+            }
+          })
+        }
+      })
+    })(window)
+  </script>
+  <style type="text/css">
+    * { margin: 0; padding: 0; }
+    grid { display: block; width: 420px; height: auto; margin: 80px auto; }
+    tile { position: relative; display: block; float: left; border-collapse: collapse; border: 1px solid black; width: 50px; height: 50px; }
+    tile.open { background-color: lightblue; }
+    tile.tree { background-color: lightgreen; }
+    tile.start { background-color: lightgrey; }
+    tile.selected { background-color: orange; }
+    tile.end { background-color: green; }
+    tile em { position: absolute; top: 18px; left: 14px; color: black; font: 13px Helvetica,arial,freesans,clean,sans-serif; }
+  </style>
+  <body>
+    <grid></grid>
+  </body>
+</html>

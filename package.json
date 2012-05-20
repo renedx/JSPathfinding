@@ -1,0 +1,13 @@
+{
+    "name": "JSPathfinding"
+  , "version": "0.1.1"
+  , "description": "A* Pathfinding in JavaScript"
+  , "keywords": ["pathfinding", "astar", "fast"]
+  , "author": "René van Sweeden <renevs@dualdev.com>"
+  , "repository":{
+        "type": "git"
+      , "url": "https://github.com/renedx/JSPathfinding.git"
+    }
+  , "main": "./lib/path.js"
+  , "engines": { "node": ">= 0.6.0" }
+}
